@@ -47,8 +47,10 @@ jobs:
 
   publish:
     runs-on: ubuntu-latest
+    needs: build
     steps:
       - name: create realease
+        id: create-release
         uses: actions/create-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.github_token }}
@@ -58,4 +60,17 @@ jobs:
           body: New release for ${{ github.sha }}. Release notes on the documentation site
           draft: false
           prerelease: false
+      - name: download artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: zipped-buddle
+      - name: upload release asset
+        uses: actions/uploade-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.github_token }}
+        with:
+          upload_url: ${{ steps.create-release.output.uploade_url }}
+          asset_path: ./${{ github.sha }}.zip
+          asset_name: source_code_with_libraries.zip
+          asset_content_type: application/zip
           
