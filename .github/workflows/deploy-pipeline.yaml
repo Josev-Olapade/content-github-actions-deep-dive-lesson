@@ -65,7 +65,7 @@ jobs:
         with:
           name: zipped-buddle
       - name: upload release asset
-        uses: actions/uploade-release-asset@v1
+        uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.github_token }}
         with:
