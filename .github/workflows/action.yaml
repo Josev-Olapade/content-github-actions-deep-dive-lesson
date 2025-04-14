@@ -89,6 +89,8 @@ jobs:
               --handler lambda_function.lambda_handler \
               --runtime python3.9 \
               --role arn:aws:iam::${{ secrets.AWS_ACCOUNT_ID }}:role/service-role/helloworld-role-mwlxdnjq
+      - name: Wait 15 seconds
+        run: sleep 15
       - name: Invoke test function
         run: |
             aws lambda invoke \
@@ -98,7 +100,6 @@ jobs:
             if grep -q "Error" out; then
               exit 1
             fi
-            
       - name: Wait 30 seconds
         run: sleep 30
       - name: Destroy test function
